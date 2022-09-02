@@ -9,6 +9,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.function.Consumer;
 
 public class Controller {
@@ -20,27 +22,54 @@ public class Controller {
     @FXML public ListView<String> userList;
 
     private Network network;
-
     private Chat application;
 
-
     public void sendMessage(ActionEvent actionEvent) {
-        String message = textField.getText();
-        appendMessageToChat(message);
+        String message = textField.getText().trim();
+
+        if (message.isEmpty()){
+            textField.clear();
+            return;
+        }
+
+        String sender = null;
+        if (!userList.getSelectionModel().isEmpty()){
+            sender = userList.getSelectionModel().getSelectedItem();
+        }
+
+
 
         try {
+            message = sender != null ? String.join(": ", sender, message) : message;
             network.sendMessage(message);
         } catch (IOException e) {
+            application.showError("Ошибка передачи данных по сети");
             e.printStackTrace();
         }
+
+        appendMessageToChat(message, "Я");
+
     }
 
-    private void appendMessageToChat(String message) {
-        if (!message.isEmpty()) {
-            textArea.appendText(message);
-            textArea.appendText(System.lineSeparator());
-            textField.clear();
+    private void appendTimeAndDate() {
+        textArea.appendText(DateFormat.getDateTimeInstance().format(new Date()));
+        textArea.appendText(System.lineSeparator());
+
+    }
+
+    private void appendMessageToChat(String message, String sender) {
+        appendTimeAndDate();
+
+        if(sender != null) {
+            textArea.appendText(sender + ":");
+            textArea.appendText((System.lineSeparator()));
         }
+
+        textArea.appendText(message);
+        textArea.appendText((System.lineSeparator()));
+        textArea.appendText((System.lineSeparator()));
+        textField.setFocusTraversable(true);
+        textField.clear();
     }
 
     public void setNetwork(Network network) {
@@ -52,7 +81,7 @@ public class Controller {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        appendMessageToChat(message);
+                        appendMessageToChat(message, "Сервер");
                     }
                 });
             }
