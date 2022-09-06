@@ -1,4 +1,4 @@
-package OnlineChat.Client;
+package ru.korneev.client;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;

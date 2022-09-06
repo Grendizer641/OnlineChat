@@ -1,4 +1,4 @@
-package OnlineChat.Client;
+package ru.korneev.client;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

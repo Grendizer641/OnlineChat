@@ -1,4 +1,4 @@
-package OnlineChat.Client;
+package ru.korneev.client;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -9,11 +9,7 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
 
 public class Chat extends Application {
 
@@ -27,7 +23,7 @@ public class Chat extends Application {
         this.stage = stage;
 
         FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("Template.fxml"));
+        fxmlLoader.setLocation(getClass().getResource("chatTemplate.fxml"));
 
         Parent load = fxmlLoader.load();
         Scene scene = new Scene(load);
